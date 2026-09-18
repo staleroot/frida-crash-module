@@ -35,9 +35,10 @@ class ModuleMain : XposedModule() {
 
         if (!param.isFirstPackage) return
 
-        log(PRIORITY_DEFAULT, TAG, "hooking android.app.Application.onCreate")
-        hook(Class.forName("android.app.Application").getMethod("onCreate")).intercept { chain ->
-            log(PRIORITY_DEFAULT, TAG, "onCreate called!")
+        hook(
+            Class.forName("android.app.Application")
+            .getMethod("onCreate")
+        ).intercept { chain ->
             chain.proceed()
         }
     }
