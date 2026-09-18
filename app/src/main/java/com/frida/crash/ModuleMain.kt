@@ -25,6 +25,14 @@ class ModuleMain : XposedModule() {
     override fun onPackageLoaded(param: PackageLoadedParam) {
         log(Log.INFO, TAG, "onPackageLoaded: " + param.packageName)
 //        log(Log.INFO, TAG, "default classloader is " + param.defaultClassLoader)
+
+        if (!param.isFirstPackage) return
+
+        log(PRIORITY_DEFAULT, TAG, "hooking android.app.Application.onCreate")
+        hook(Class.forName("android.app.Application").getMethod("onCreate")).intercept { chain ->
+            log(PRIORITY_DEFAULT, TAG, "onCreate called!")
+            chain.proceed()
+        }
     }
 
     override fun onPackageReady(param: XposedModuleInterface.PackageReadyParam) {
@@ -32,15 +40,6 @@ class ModuleMain : XposedModule() {
 //        log(Log.INFO, TAG, "app classloader is " + param.classLoader)
 //        log(Log.INFO, TAG, "app acf is " + param.appComponentFactory)
 //        log(Log.INFO, TAG, "module apk path: " + this.moduleApplicationInfo.sourceDir)
-
-        if (!param.isFirstPackage) return
-
-        hook(
-            Class.forName("android.app.Application")
-            .getMethod("onCreate")
-        ).intercept { chain ->
-            chain.proceed()
-        }
     }
 
     override fun onSystemServerStarting(param: XposedModuleInterface.SystemServerStartingParam) {
