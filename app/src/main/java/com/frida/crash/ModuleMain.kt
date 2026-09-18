@@ -1,6 +1,5 @@
 package com.frida.crash
 
-import android.annotation.SuppressLint
 import android.util.Log
 import io.github.libxposed.api.XposedModule
 import io.github.libxposed.api.XposedModuleInterface
@@ -28,7 +27,6 @@ class ModuleMain : XposedModule() {
 //        log(Log.INFO, TAG, "default classloader is " + param.defaultClassLoader)
     }
 
-    @SuppressLint("DuplicateCreateDexKit")
     override fun onPackageReady(param: XposedModuleInterface.PackageReadyParam) {
         log(Log.INFO, TAG, "onPackageReady: " + param.packageName)
 //        log(Log.INFO, TAG, "app classloader is " + param.classLoader)
